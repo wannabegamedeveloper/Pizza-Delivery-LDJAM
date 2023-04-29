@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Globalization;
 using UnityEngine;
 using TMPro;
 
@@ -49,7 +46,6 @@ public class PlayerStats : MonoBehaviour
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        tipsText.text = tips.ToString("0.00");
         fuelText.text = fuel.ToString("0.00");
         energyText.text = energy.ToString("0.00");
         hydroText.text = hydration.ToString("0.00");
@@ -60,7 +56,6 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
-        tipsText.text = tips.ToString(CultureInfo.InvariantCulture);
         UpdateUI(fuelValue, fuel);
         UpdateUI(energyValue, energy);
         UpdateUI(hydroValue, hydration);

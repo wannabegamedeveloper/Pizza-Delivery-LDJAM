@@ -1,9 +1,6 @@
-using System;
 using System.Collections.Generic;
-using System.Globalization;
 using TMPro;
 using UnityEngine;
-using UnityEngine.UI;
 using Random = UnityEngine.Random;
 
 public class PlayerCollision : MonoBehaviour
@@ -14,9 +11,7 @@ public class PlayerCollision : MonoBehaviour
     
     [SerializeField] private int pizzaCapacity;
     [SerializeField] private PizzaOrders orders;
-
-    [SerializeField] private TMP_Text carrying;
-
+    
     private bool _inPetrol;
     private bool _inWater;
     private bool _inFood;
@@ -28,8 +23,6 @@ public class PlayerCollision : MonoBehaviour
 
     private void Update()
     {
-        carrying.text = collectedPizzas.Count.ToString();
-        
         if (!Input.GetKeyDown(KeyCode.E)) return;
         if (_inPetrol)
         {
@@ -70,6 +63,7 @@ public class PlayerCollision : MonoBehaviour
                 collectedPizzas.Remove(locationID);
                 orders.currentOrders.Remove(locationID);
                 orders.deliveryLocations[locationID].enabled = false;
+                orders.deliveryLocations[locationID].transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
                 if (orders.times[locationID] > 0)
                     playerStats.tips += Random.Range(0.6f, 1.0f);
                 else
@@ -83,27 +77,35 @@ public class PlayerCollision : MonoBehaviour
         if (other.CompareTag("Petrol Pump"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
         }
         else if (other.CompareTag("Food"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
         }
         else if (other.CompareTag("Pizza"))
         {
             _inPizza = true;
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
         }
         else if (other.CompareTag("Water"))
         {
-            _inWater = true;
+            other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
         }
         else if (other.CompareTag("RepairShop"))
         {
-            _inRepair = true;
+            other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
         }
         else if (other.CompareTag("Location"))
         {
             _inLocation = true;
             _locationID = other.name;
+            int.TryParse(_locationID, out int locationID);
+            if (collectedPizzas.Contains(locationID))
+                other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
         }
     }
 
@@ -151,24 +153,30 @@ public class PlayerCollision : MonoBehaviour
         if (other.CompareTag("Petrol Pump"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
         }
         else if (other.CompareTag("Food"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
         }
         else if (other.CompareTag("Pizza"))
         {
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
         }
         else if (other.CompareTag("Water"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
         }
         else if (other.CompareTag("RepairShop"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
         }
         else if (other.CompareTag("Location"))
         {
+            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
         }
         _inPetrol = false;
         _inWater = false;
