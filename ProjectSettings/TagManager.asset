@@ -9,6 +9,7 @@ TagManager:
   - Water
   - Pizza
   - RepairShop
+  - Location
   layers:
   - Default
   - TransparentFX
