@@ -65,11 +65,16 @@ public class PizzaOrders : MonoBehaviour
             int x = Random.Range(0, deliveryLocations.Length);
             if (!currentOrders.Contains(x) && !playerCollision.collectedPizzas.Contains(x))
             {
-                currentOrders.Add(x);
-                deliveryLocations[x].enabled = true;
-                deliveryLocations[x].transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("LocationBlueShow", -1, 0f);
-                times[x] = 20;
-                _newOrder = true;
+
+                if (currentOrders.Count < numDeliveries)
+                {
+                    currentOrders.Add(x);
+                    deliveryLocations[x].enabled = true;
+                    deliveryLocations[x].transform.GetChild(0).GetChild(0).GetComponent<Animator>()
+                        .Play("LocationBlueShow", -1, 0f);
+                    times[x] = 20;
+                    _newOrder = true;
+                }
             }
         }
 

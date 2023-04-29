@@ -137,9 +137,9 @@ public class PlayerStats : MonoBehaviour
 
     public void BuyLongevity(float money)
     {
-        if (!(tips > longevityRatePer) || !(tips > money)) return;
-        if (longevity < maxFuel)
-            longevity += money / longevityRatePer;
+        if (tips < money) return;
+        if (longevity > maxLongevity) return;
+        longevity += money / longevityRatePer;
 
         longevity = Mathf.Clamp(longevity, 0f, maxLongevity);
 
@@ -150,9 +150,9 @@ public class PlayerStats : MonoBehaviour
     
     public void BuyFuel(float money)
     {
-        if (!(tips > fuelRatePerLitre) || !(tips > money)) return;
-        if (fuel < maxFuel)
-            fuel += money / fuelRatePerLitre;
+        if (tips < money) return;
+        if (fuel > maxFuel) return;
+        fuel += money / fuelRatePerLitre;
 
         fuel = Mathf.Clamp(fuel, 0f, maxFuel);
 
@@ -163,9 +163,9 @@ public class PlayerStats : MonoBehaviour
 
     public void BuyFood(float money)
     {
-        if (!(tips > foodRatePerMeal) || !(tips > money)) return;
-        if (energy < maxEnergy)
-            energy += money / foodRatePerMeal;
+        if (tips < money) return;
+        if (energy > maxEnergy) return;
+        energy += money / foodRatePerMeal;
 
         energy = Mathf.Clamp(energy, 0f, maxEnergy);
 
@@ -176,9 +176,9 @@ public class PlayerStats : MonoBehaviour
 
     public void BuyDrink(float money)
     {
-        if (!(tips > drinkRatePerDrink) || !(tips > money)) return;
-        if (hydration < maxDrink)
-            hydration += money / drinkRatePerDrink;
+        if (tips < money) return;
+        if (hydration > maxDrink) return;
+        hydration += money / drinkRatePerDrink;
 
         hydration = Mathf.Clamp(hydration, 0f, maxDrink);
 

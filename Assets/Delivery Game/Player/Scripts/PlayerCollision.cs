@@ -8,14 +8,12 @@ using Random = UnityEngine.Random;
 
 public class PlayerCollision : MonoBehaviour
 {
+    public float money;
     public List<int> collectedPizzas;
+    public PlayerStats playerStats;
     
-    [SerializeField] private PlayerStats playerStats;
     [SerializeField] private int pizzaCapacity;
     [SerializeField] private PizzaOrders orders;
-    
-    [SerializeField] private Slider moneySlider;
-    [SerializeField] private TMP_Text sliderText;
 
     [SerializeField] private TMP_Text carrying;
 
@@ -30,26 +28,24 @@ public class PlayerCollision : MonoBehaviour
 
     private void Update()
     {
-        moneySlider.maxValue = playerStats.tips;
-        sliderText.text = "$" + moneySlider.value.ToString("0.00");
         carrying.text = collectedPizzas.Count.ToString();
         
         if (!Input.GetKeyDown(KeyCode.E)) return;
         if (_inPetrol)
         {
-            playerStats.BuyFuel(moneySlider.value);
+            playerStats.BuyFuel(money);
         }
         else if (_inWater)
         {
-            playerStats.BuyDrink(moneySlider.value);
+            playerStats.BuyDrink(money);
         }
         else if (_inFood)
         {
-            playerStats.BuyFood(moneySlider.value);
+            playerStats.BuyFood(money);
         }
         else if (_inRepair)
         {
-            playerStats.BuyLongevity(moneySlider.value);
+            playerStats.BuyLongevity(money);
         }
         else if (_inPizza)
         {
@@ -79,6 +75,35 @@ public class PlayerCollision : MonoBehaviour
                 else
                     playerStats.tips += Random.Range(0.3f, 0.6f);
             }
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Petrol Pump"))
+        {
+            other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
+        }
+        else if (other.CompareTag("Food"))
+        {
+            other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
+        }
+        else if (other.CompareTag("Pizza"))
+        {
+            _inPizza = true;
+        }
+        else if (other.CompareTag("Water"))
+        {
+            _inWater = true;
+        }
+        else if (other.CompareTag("RepairShop"))
+        {
+            _inRepair = true;
+        }
+        else if (other.CompareTag("Location"))
+        {
+            _inLocation = true;
+            _locationID = other.name;
         }
     }
 
@@ -123,6 +148,28 @@ public class PlayerCollision : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        if (other.CompareTag("Petrol Pump"))
+        {
+            other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
+        }
+        else if (other.CompareTag("Food"))
+        {
+            other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
+        }
+        else if (other.CompareTag("Pizza"))
+        {
+        }
+        else if (other.CompareTag("Water"))
+        {
+            other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
+        }
+        else if (other.CompareTag("RepairShop"))
+        {
+            other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
+        }
+        else if (other.CompareTag("Location"))
+        {
+        }
         _inPetrol = false;
         _inWater = false;
         _inFood = false;
