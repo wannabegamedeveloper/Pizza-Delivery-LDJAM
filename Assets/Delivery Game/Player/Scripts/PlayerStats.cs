@@ -33,16 +33,27 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private TMP_Text hydroText;
     [SerializeField] private TMP_Text longevityText;
     [SerializeField] private TMP_Text tipsText;
+    
+    [SerializeField] private Transform fuelValue;
+    [SerializeField] private Transform energyValue;
+    [SerializeField] private Transform hydroValue;
+    [SerializeField] private Transform longValue;
 
     private Rigidbody _rb;
 
+    private bool _played1;
+    private bool _played2;
+    private bool _played3;
+    private bool _played4;
+    
     private void Start()
     {
         _rb = GetComponent<Rigidbody>();
-        tipsText.text = tips.ToString(CultureInfo.InvariantCulture);
-        fuelText.text = fuel.ToString(CultureInfo.InvariantCulture);
-        energyText.text = energy.ToString(CultureInfo.InvariantCulture);
-        hydroText.text = hydration.ToString(CultureInfo.InvariantCulture);
+        tipsText.text = tips.ToString("0.00");
+        fuelText.text = fuel.ToString("0.00");
+        energyText.text = energy.ToString("0.00");
+        hydroText.text = hydration.ToString("0.00");
+        longevityText.text = longevity.ToString("0.00");
 
         InvokeRepeating(nameof(UpdateStats), 1.0f, 1.0f);
     }
@@ -50,6 +61,59 @@ public class PlayerStats : MonoBehaviour
     private void Update()
     {
         tipsText.text = tips.ToString(CultureInfo.InvariantCulture);
+        UpdateUI(fuelValue, fuel);
+        UpdateUI(energyValue, energy);
+        UpdateUI(hydroValue, hydration);
+        UpdateUI(longValue, longevity);
+
+        if (fuel < 1.0f && !_played1)
+        {
+            _played1 = true;
+            fuelValue.parent.GetComponent<Animator>().Play("FuelLow");
+        }
+        else if (fuel >= 1.0f && _played1)
+        {
+            _played1 = false;
+            fuelValue.parent.GetComponent<Animator>().Play("FuelFine");
+        }
+        if (energy < 1.0f && !_played2)
+        {
+            _played2 = true;
+            energyValue.parent.GetComponent<Animator>().Play("FoodLow");
+        }
+        else if (energy >= 1.0f && _played2)
+        {
+            _played2 = false;
+            energyValue.parent.GetComponent<Animator>().Play("FoodFine");
+        }
+        if (hydration < 1.0f && !_played3)
+        {
+            _played3 = true;
+            hydroValue.parent.GetComponent<Animator>().Play("WaterLow");
+        }
+        else if (hydration >= 1.0f && _played3)
+        {
+            _played3 = false;
+            hydroValue.parent.GetComponent<Animator>().Play("WaterFine");
+        }
+        if (longevity < 1.0f && !_played4)
+        {
+            _played4 = true;
+            longValue.parent.GetComponent<Animator>().Play("LongLow");
+        }
+        else if (longevity >= 1.0f && _played4)
+        {
+            _played4 = false;
+            longValue.parent.GetComponent<Animator>().Play("LongFine");
+        }
+            
+    }
+
+    private void UpdateUI(Transform scale, float x)
+    {
+        var value = scale.localScale;
+        value.x = Mathf.Lerp(value.x, x * 20f, 5f * Time.deltaTime);
+        scale.localScale = value;
     }
 
     private void UpdateStats()
@@ -60,10 +124,10 @@ public class PlayerStats : MonoBehaviour
         hydration -= dehydration;
         longevity -= bikeDegrading;
             
-        fuelText.text = fuel.ToString(CultureInfo.InvariantCulture);
-        energyText.text = energy.ToString(CultureInfo.InvariantCulture);
-        hydroText.text = hydration.ToString(CultureInfo.InvariantCulture);
-        longevityText.text = longevity.ToString(CultureInfo.InvariantCulture);
+        fuelText.text = fuel.ToString("0.00");
+        energyText.text = energy.ToString("0.00");
+        hydroText.text = hydration.ToString("0.00");
+        longevityText.text = longevity.ToString("0.00");
 
     }
 
@@ -82,7 +146,7 @@ public class PlayerStats : MonoBehaviour
 
         UpdateMoney(money);
 
-        longevityText.text = longevity.ToString(CultureInfo.InvariantCulture);
+        longevityText.text = longevity.ToString("0.00");
     }
     
     public void BuyFuel(float money)
@@ -95,7 +159,7 @@ public class PlayerStats : MonoBehaviour
 
         UpdateMoney(money);
 
-        fuelText.text = fuel.ToString(CultureInfo.InvariantCulture);
+        fuelText.text = fuel.ToString("0.00");
     }
 
     public void BuyFood(float money)
@@ -108,7 +172,7 @@ public class PlayerStats : MonoBehaviour
 
         UpdateMoney(money);
 
-        energyText.text = energy.ToString(CultureInfo.InvariantCulture);
+        energyText.text = energy.ToString("0.00");
     }
 
     public void BuyDrink(float money)
@@ -121,6 +185,6 @@ public class PlayerStats : MonoBehaviour
 
         UpdateMoney(money);
 
-        hydroText.text = hydration.ToString(CultureInfo.InvariantCulture);
+        hydroText.text = hydration.ToString("0.00");
     }
 }
