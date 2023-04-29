@@ -118,8 +118,7 @@ public class PlayerStats : MonoBehaviour
 
     private void UpdateStats()
     {
-        if (_rb.velocity == Vector3.zero) return;
-        fuel -= mileage;
+        if (_rb.velocity != Vector3.zero) fuel -= mileage;
         energy -= energyLoss;
         hydration -= dehydration;
         longevity -= bikeDegrading;

@@ -53,25 +53,31 @@ public class PlayerCollision : MonoBehaviour
         }
         else if (_inPizza)
         {
-                foreach (int currentOrder in orders.currentOrders)
+            foreach (int currentOrder in orders.currentOrders)
+            {
+                if (collectedPizzas.Count < pizzaCapacity)
                 {
-                    if (collectedPizzas.Count < pizzaCapacity)
+                    if (!collectedPizzas.Contains(currentOrder))
                     {
-                        if (!collectedPizzas.Contains(currentOrder))
-                            collectedPizzas.Add(currentOrder);
+                        collectedPizzas.Add(currentOrder);
+                        orders.deliveryLocations[currentOrder].transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("LocationShowYellow", -1, 0f);
                     }
                 }
+            }
         }
         else if (_inLocation)
         {
             int.TryParse(_locationID, out int locationID);
             if (collectedPizzas.Contains(locationID))
             {
+                orders.deliveryLocations[locationID].transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("HideYellow", -1, 0f);
                 collectedPizzas.Remove(locationID);
                 orders.currentOrders.Remove(locationID);
                 orders.deliveryLocations[locationID].enabled = false;
-                orders.deliveryLocations[locationID].transform.GetChild(0).gameObject.SetActive(false);
-                playerStats.tips += Random.Range(0.3f, 0.6f);
+                if (orders.times[locationID] > 0)
+                    playerStats.tips += Random.Range(0.6f, 1.0f);
+                else
+                    playerStats.tips += Random.Range(0.3f, 0.6f);
             }
         }
     }
