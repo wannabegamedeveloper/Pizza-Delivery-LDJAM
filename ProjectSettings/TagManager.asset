@@ -10,6 +10,9 @@ TagManager:
   - Pizza
   - RepairShop
   - Location
+  - Car
+  - Turn
+  - Edges
   layers:
   - Default
   - TransparentFX
