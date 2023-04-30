@@ -10,7 +10,8 @@ public class PlayerCollision : MonoBehaviour
     public PlayerStats playerStats;
     
     [SerializeField] private int pizzaCapacity;
-    [SerializeField] private PizzaOrders orders;
+    [SerializeField] private PizzaOrders orders;    
+    [SerializeField] private TMP_Text tipsText2;
     
     private bool _inPetrol;
     private bool _inWater;
@@ -78,11 +79,13 @@ public class PlayerCollision : MonoBehaviour
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
             other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
+            tipsText2.gameObject.SetActive(true);
         }
         else if (other.CompareTag("Food"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
             other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
+            tipsText2.gameObject.SetActive(true);
         }
         else if (other.CompareTag("Pizza"))
         {
@@ -93,11 +96,13 @@ public class PlayerCollision : MonoBehaviour
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
             other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
+            tipsText2.gameObject.SetActive(true);
         }
         else if (other.CompareTag("RepairShop"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("ShopOpen", -1, 0f);
             other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EShow", -1, 0f);
+            tipsText2.gameObject.SetActive(true);
         }
         else if (other.CompareTag("Location"))
         {
@@ -154,11 +159,13 @@ public class PlayerCollision : MonoBehaviour
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
             other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
+            tipsText2.gameObject.SetActive(false);
         }
         else if (other.CompareTag("Food"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
             other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
+            tipsText2.gameObject.SetActive(false);
         }
         else if (other.CompareTag("Pizza"))
         {
@@ -168,11 +175,13 @@ public class PlayerCollision : MonoBehaviour
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
             other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
+            tipsText2.gameObject.SetActive(false);
         }
         else if (other.CompareTag("RepairShop"))
         {
             other.transform.GetChild(0).GetChild(0).GetComponent<Animator>().Play("CloseShop", -1, 0f);
             other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
+            tipsText2.gameObject.SetActive(false);
         }
         else if (other.CompareTag("Location"))
         {

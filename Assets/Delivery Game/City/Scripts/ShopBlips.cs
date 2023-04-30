@@ -1,10 +1,12 @@
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class ShopBlips : MonoBehaviour
 {
+    [SerializeField] private GameObject otherFuel;
     [SerializeField] private PlayerCollision playerCollision;
     [SerializeField] private Slider slider;
     [SerializeField] private TMP_Text tipsText;
@@ -19,21 +21,32 @@ public class ShopBlips : MonoBehaviour
     {
         if (!slider.interactable)
         {
-            ind.gameObject.SetActive(false);
-            ind.parent.GetChild(3).gameObject.SetActive(false);
-            tipsText2.gameObject.SetActive(false);
+            if (ind.name == "Fuel")
+            {
+                if (!otherFuel.GetComponent<Slider>().interactable)
+                {
+                    ind.gameObject.SetActive(false);
+                    ind.parent.GetChild(3).gameObject.SetActive(false);
+                }
+            }
+            else
+            {
+                ind.gameObject.SetActive(false);
+                ind.parent.GetChild(3).gameObject.SetActive(false);
+            }
+
             return;
         }
+
         tipsText.text = "$" + playerCollision.playerStats.tips.ToString("0.00");
         slider.maxValue = playerCollision.playerStats.tips;
         sliderText.text = "-$" + slider.value.ToString("0.00");
         _subtracted = playerCollision.playerStats.tips - slider.value;
         tipsText2.text = subtractedText.text = "$" + _subtracted.ToString("0.00");
         playerCollision.money = slider.value;
-
+        
         ind.gameObject.SetActive(true);
         ind.parent.GetChild(3).gameObject.SetActive(true);
-        tipsText2.gameObject.SetActive(true);
         
         var scale = ind.localScale;
         if (ind.name == "Fuel")
