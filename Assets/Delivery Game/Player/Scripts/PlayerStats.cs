@@ -10,20 +10,20 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private float dehydration;
     [SerializeField] private float bikeDegrading;
     
-    [SerializeField] private float fuelRatePerLitre;
-    [SerializeField] private float foodRatePerMeal;
-    [SerializeField] private float drinkRatePerDrink;
-    [SerializeField] private float longevityRatePer;
+    public float fuelRatePerLitre;
+    public float foodRatePerMeal;
+    public float drinkRatePerDrink;
+    public float longevityRatePer;
     
     [SerializeField] private float maxFuel;
     [SerializeField] private float maxEnergy;
     [SerializeField] private float maxDrink;
     [SerializeField] private float maxLongevity;
     
-    [SerializeField] private float fuel;
-    [SerializeField] private float energy;
-    [SerializeField] private float hydration;
-    [SerializeField] private float longevity;
+    public float fuel;
+    public float energy;
+    public float hydration;
+    public float longevity;
     
     [SerializeField] private TMP_Text fuelText;
     [SerializeField] private TMP_Text energyText;
@@ -56,6 +56,7 @@ public class PlayerStats : MonoBehaviour
 
     private void Update()
     {
+        tipsText.text = "Tips: $" + tips.ToString("0.00");
         UpdateUI(fuelValue, fuel);
         UpdateUI(energyValue, energy);
         UpdateUI(hydroValue, hydration);

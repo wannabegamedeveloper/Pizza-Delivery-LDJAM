@@ -176,7 +176,9 @@ public class PlayerCollision : MonoBehaviour
         }
         else if (other.CompareTag("Location"))
         {
-            other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
+            int.TryParse(_locationID, out int locationID);
+            if (collectedPizzas.Contains(locationID))
+                other.transform.GetChild(1).GetChild(0).GetComponent<Animator>().Play("EHide", -1, 0f);
         }
         _inPetrol = false;
         _inWater = false;
