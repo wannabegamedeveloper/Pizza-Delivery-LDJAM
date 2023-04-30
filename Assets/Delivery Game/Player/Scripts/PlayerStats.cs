@@ -1,3 +1,4 @@
+using System.Globalization;
 using UnityEngine;
 using TMPro;
 
@@ -36,12 +37,18 @@ public class PlayerStats : MonoBehaviour
     [SerializeField] private Transform hydroValue;
     [SerializeField] private Transform longValue;
 
+    [SerializeField] private GameObject endPanel;
+    [SerializeField] private TMP_Text endText;
+    [SerializeField] private TMP_Text endTime;
+    
     private Rigidbody _rb;
 
     private bool _played1;
     private bool _played2;
     private bool _played3;
     private bool _played4;
+
+    private float _time;
     
     private void Start()
     {
@@ -54,8 +61,30 @@ public class PlayerStats : MonoBehaviour
         InvokeRepeating(nameof(UpdateStats), 1.0f, 1.0f);
     }
 
+    private void EndGame()
+    {
+        endPanel.SetActive(true);
+        if (fuel < 0f)
+            endText.text = "No fuel!";
+        else if (energy < 0f)
+            endText.text = "Died of hunger!";
+        else if (hydration < 0f)
+            endText.text = "Dehydration!";
+        else if (longevity < 0f)
+            endText.text = "Your bike broke!";
+        endTime.text = "Time survived: " + _time.ToString(CultureInfo.InvariantCulture) + "s";
+        GetComponent<PlayerController>().enabled = false;
+        CancelInvoke(nameof(UpdateStats));
+        enabled = false;
+    }
+
     private void Update()
     {
+        if (fuel < 0f || energy < 0 || hydration < 0 || longevity < 0)
+        {
+            EndGame();
+        }
+        
         tipsText.text = "Tips: $" + tips.ToString("0.00");
         UpdateUI(fuelValue, fuel);
         UpdateUI(energyValue, energy);
@@ -114,6 +143,8 @@ public class PlayerStats : MonoBehaviour
 
     private void UpdateStats()
     {
+        _time++;
+        
         if (_rb.velocity != Vector3.zero) fuel -= mileage;
         energy -= energyLoss;
         hydration -= dehydration;
