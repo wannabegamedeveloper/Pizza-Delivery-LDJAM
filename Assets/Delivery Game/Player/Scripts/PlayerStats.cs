@@ -75,6 +75,9 @@ public class PlayerStats : MonoBehaviour
         endTime.text = "Time survived: " + _time.ToString(CultureInfo.InvariantCulture) + "s";
         GetComponent<PlayerController>().enabled = false;
         CancelInvoke(nameof(UpdateStats));
+        
+        JSLink.Instance.ExitGame((int) _time);
+        
         enabled = false;
     }
 

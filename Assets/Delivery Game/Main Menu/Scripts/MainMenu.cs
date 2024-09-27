@@ -11,5 +11,6 @@ public class MainMenu : MonoBehaviour
     public void Quit()
     {
         Application.Quit();
+        JSLink.Instance.ExitGame(0);
     }
 }
